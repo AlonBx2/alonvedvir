@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>נחש ת'חתול</title>
+    <style>
+        body {
+            background-image: url('natur.jpg');
+            background-size: cover;
+        }   
+        body {
+            font-family: Arial, sans-serif;
+        }
+        h1, h2 {
+            margin: 20px;
+        }
+        img {
+            cursor: pointer;
+            margin: 10px;
+        }
+        .cup {
+            position: relative;
+            display: inline-block;
+        }
+        .cat {
+            position: absolute;
+            top: 50px;
+            left: 50px; 
+            width: 400px;
+            height: 500px;
+            display: none;
+        }
+        #restartButton {
+            display: none;
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        #score {
+            font-size: 20px;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <center>
+        <h1 id="dvir">איפה החתול</h1>
+        <div id="score">ניקוד: 0</div>
+        <div class="cup" id="cup1">
+            <img src="cup.png" style="width:500px;height:600px;" id="1" onclick="guess(event)">
+            <img src="cat.png" class="cat" id="cat1">
+        </div>
+        <div class="cup" id="cup2">
+            <img src="cup.png" style="width:500px;height:600px;" id="2" onclick="guess(event)">
+            <img src="cat.png" class="cat" id="cat2">
+        </div>
+        <div class="cup" id="cup3">
+            <img src="cup.png" style="width:500px;height:600px;" id="3" onclick="guess(event)">
+            <img src="cat.png" class="cat" id="cat3">
+        </div>
+        <h2 id="duking"></h2>
+        <button id="restartButton" onclick="restartGame()">התחל מחדש</button>
+        <!-- Add an audio element -->
+        <audio id="catSound" src="cat_sound.mp3"></audio>
+        <audio id="naha" src="naha.mp3"></audio>
+    </center>
+    <script>
+        let randomNumber = randomnum();
+        let score = 0;
+
+        function guess(event) {
+            const guess = event.target.id;
+            checkValue(guess == randomNumber);
+        }
+
+        function randomnum() {
+            return Math.floor(Math.random() * 3) + 1;
+        }
+
+        function checkValue(value) {
+            const duckk = document.getElementById("dvir");
+            if (!value) {
+                duckk.innerHTML = "לא נכון נסה שנית";
+                document.getElementById("naha").play();
+                score = Math.max(0, score - 100); // לא לאפשר ניקוד שלילי
+            } else {
+                duckk.innerHTML = "כדי לשחק מחדש לחצו על הכפתור למטה";
+                const cat = document.getElementById("cat" + randomNumber);
+                cat.style.display = 'block';
+             document.getElementById("catSound").play();
+                document.getElementById("restartButton").style.display = 'block';
+                score += 100;
+            }
+            document.getElementById("score").innerText = "ניקוד: " + score;
+        }
+
+        function restartGame() {
+            randomNumber = randomnum();
+            document.getElementById("dvir").innerHTML = "איפה החתול";
+            document.getElementById("restartButton").style.display = 'none';
+            const cats = document.getElementsByClassName("cat");
+            for (let i = 0; i < cats.length; i++) {
+                cats[i].style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
